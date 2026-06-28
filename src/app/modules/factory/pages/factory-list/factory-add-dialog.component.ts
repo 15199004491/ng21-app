@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit, inject } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnChanges, inject, ViewChild, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SelectModule } from 'primeng/select';
@@ -6,16 +6,18 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { InputNumberModule } from 'primeng/inputnumber';
-import { Factory } from './factory.model';
-import { FactoryService } from './factory.service';
+import { Factory } from '../../models/factory.model';
+import { FactoryService } from '../../services/factory.service';
 
 @Component({
     selector: 'factory-add-dialog',
+    standalone: true,
+    imports: [CommonModule, SelectModule, InputTextModule, FormsModule, ButtonModule, DialogModule, InputNumberModule],
     template: `
-        <p-dialog header="Add New Factory" [(visible)]="visible" [modal]="true" [style]="{ width: '35%' }">
+        <p-dialog header="Add New Factory" [(visible)]="visible" [modal]="true" [style]="{ width: '35%' }" [focusTrap]="false">
             <form #addForm="ngForm" class="p-fluid">
-                <div class="field flex items-center gap-4">
-                    <label for="factoryName" class="w-44">* Factory Name</label>
+                <div class="field">
+                    <label for="factoryName" class="block mb-2">* Factory Name</label>
                     <input 
                         id="factoryName" 
                         pInputText 
@@ -23,21 +25,21 @@ import { FactoryService } from './factory.service';
                         name="name" 
                         required
                         maxlength="50"
-                        pattern="[a-zA-Z0-9\s]+"
+                        pattern="[a-zA-Z0-9\\s]+"
                         #name="ngModel"
-                        class="flex-1"
+                        class="w-full"
                     />
-                </div>
-                <div class="mt-1 ml-[196px]">
-                    <small *ngIf="name.invalid && (name.dirty || name.touched)" style="color: red; display: block; font-size: 14px;">
-                        <span *ngIf="name.errors?.['required']">Factory name is required.</span>
-                        <span *ngIf="name.errors?.['maxlength']">Factory name cannot exceed 50 characters.</span>
-                        <span *ngIf="name.errors?.['pattern']">Factory name can only contain letters, numbers, and spaces.</span>
-                    </small>
+                    @if (name.invalid && (name.dirty || name.touched)) {
+                        <small class="error-text">
+                            @if (name.errors?.['required']) {<span>Factory name is required.</span>}
+                            @if (name.errors?.['maxlength']) {<span>Factory name cannot exceed 50 characters.</span>}
+                            @if (name.errors?.['pattern']) {<span>Factory name can only contain letters, numbers, and spaces.</span>}
+                        </small>
+                    }
                 </div>
 
-                <div class="field mt-4 flex items-center gap-4">
-                    <label for="location" class="w-44">* Location</label>
+                <div class="field mt-4">
+                    <label for="location" class="block mb-2">* Location</label>
                     <p-select 
                         id="location" 
                         [(ngModel)]="factory.location" 
@@ -46,18 +48,17 @@ import { FactoryService } from './factory.service';
                         #location="ngModel"
                         [options]="locations"
                         placeholder="Select location"
-                        class="flex-1"
-                    >
-                    </p-select>
-                </div>
-                <div class="mt-1 ml-[196px]">
-                    <small *ngIf="location.invalid && (location.dirty || location.touched)" style="color: red; display: block; font-size: 14px;">
-                        <span *ngIf="location.errors?.['required']">Location is required.</span>
-                    </small>
+                        class="w-full"
+                    />
+                    @if (location.invalid && (location.dirty || location.touched)) {
+                        <small class="error-text">
+                            @if (location.errors?.['required']) {<span>Location is required.</span>}
+                        </small>
+                    }
                 </div>
 
-                <div class="field mt-4 flex items-center gap-4">
-                    <label for="status" class="w-44">* Status</label>
+                <div class="field mt-4">
+                    <label for="status" class="block mb-2">* Status</label>
                     <p-select 
                         id="status" 
                         [(ngModel)]="factory.status" 
@@ -66,18 +67,17 @@ import { FactoryService } from './factory.service';
                         #status="ngModel"
                         [options]="statusOptions"
                         placeholder="Select status"
-                        class="flex-1"
-                    >
-                    </p-select>
-                </div>
-                <div class="mt-1 ml-[196px]">
-                    <small *ngIf="status.invalid && (status.dirty || status.touched)" style="color: red; display: block; font-size: 14px;">
-                        <span *ngIf="status.errors?.['required']">Status is required.</span>
-                    </small>
+                        class="w-full"
+                    />
+                    @if (status.invalid && (status.dirty || status.touched)) {
+                        <small class="error-text">
+                            @if (status.errors?.['required']) {<span>Status is required.</span>}
+                        </small>
+                    }
                 </div>
 
-                <div class="field mt-4 flex items-center gap-4">
-                    <label for="employeeCount" class="w-44">* Employee Count</label>
+                <div class="field mt-4">
+                    <label for="employeeCount" class="block mb-2">* Employee Count</label>
                     <p-inputNumber 
                         id="employeeCount" 
                         [(ngModel)]="factory.employeeCount" 
@@ -86,19 +86,19 @@ import { FactoryService } from './factory.service';
                         [min]="1"
                         [max]="10000"
                         #employeeCount="ngModel"
-                        class="flex-1"
+                        class="w-full"
                     />
-                </div>
-                <div class="mt-1 ml-[196px]">
-                    <small *ngIf="employeeCount.invalid && (employeeCount.dirty || employeeCount.touched)" style="color: red; display: block; font-size: 14px;">
-                        <span *ngIf="employeeCount.errors?.['required']">Employee count is required.</span>
-                        <span *ngIf="employeeCount.errors?.['min']">Employee count must be at least 1.</span>
-                        <span *ngIf="employeeCount.errors?.['max']">Employee count cannot exceed 10000.</span>
-                    </small>
+                    @if (employeeCount.invalid && (employeeCount.dirty || employeeCount.touched)) {
+                        <small class="error-text">
+                            @if (employeeCount.errors?.['required']) {<span>Employee count is required.</span>}
+                            @if (employeeCount.errors?.['min']) {<span>Employee count must be at least 1.</span>}
+                            @if (employeeCount.errors?.['max']) {<span>Employee count cannot exceed 10000.</span>}
+                        </small>
+                    }
                 </div>
 
-                <div class="field mt-4 flex items-center gap-4">
-                    <label for="establishedYear" class="w-44">* Established Year</label>
+                <div class="field mt-4">
+                    <label for="establishedYear" class="block mb-2">* Established Year</label>
                     <p-inputNumber 
                         id="establishedYear" 
                         [(ngModel)]="factory.establishedYear" 
@@ -107,15 +107,15 @@ import { FactoryService } from './factory.service';
                         [min]="1900"
                         [max]="2026"
                         #establishedYear="ngModel"
-                        class="flex-1"
+                        class="w-full"
                     />
-                </div>
-                <div class="mt-1 ml-[196px]">
-                    <small *ngIf="establishedYear.invalid && (establishedYear.dirty || establishedYear.touched)" style="color: red; display: block; font-size: 14px;">
-                        <span *ngIf="establishedYear.errors?.['required']">Established year is required.</span>
-                        <span *ngIf="establishedYear.errors?.['min']">Year must be 1900 or later.</span>
-                        <span *ngIf="establishedYear.errors?.['max']">Year cannot exceed 2026.</span>
-                    </small>
+                    @if (establishedYear.invalid && (establishedYear.dirty || establishedYear.touched)) {
+                        <small class="error-text">
+                            @if (establishedYear.errors?.['required']) {<span>Established year is required.</span>}
+                            @if (establishedYear.errors?.['min']) {<span>Year must be 1900 or later.</span>}
+                            @if (establishedYear.errors?.['max']) {<span>Year cannot exceed 2026.</span>}
+                        </small>
+                    }
                 </div>
 
             </form>
@@ -125,23 +125,14 @@ import { FactoryService } from './factory.service';
                 <p-button label="Confirm" icon="pi pi-check" (click)="confirm()" [disabled]="!addForm.form.valid" />
             </ng-template>
         </p-dialog>
-    `,
-    standalone: true,
-    imports: [CommonModule, SelectModule, InputTextModule, FormsModule, ButtonModule, DialogModule, InputNumberModule]
+    `
 })
-export class FactoryAddDialogComponent implements OnInit {
+export class FactoryAddDialogComponent implements OnInit, OnChanges {
     private factoryService = inject(FactoryService);
     
     @Input() visible: boolean = false;
-    @Input() factory: Factory = {
-        id: 0,
-        name: '',
-        location: '',
-        status: '',
-        employeeCount: 0,
-        establishedYear: new Date().getFullYear(),
-        verified: false
-    };
+    @ViewChild('addForm') addForm: any;
+    @Input() factory: Factory = this.createEmptyFactory();
     
     @Output() visibleChange = new EventEmitter<boolean>();
     @Output() confirmed = new EventEmitter<Factory>();
@@ -153,8 +144,35 @@ export class FactoryAddDialogComponent implements OnInit {
         { label: 'Inactive', value: 'inactive' }
     ];
 
+    private createEmptyFactory(): Factory {
+        return {
+            id: 0,
+            name: '',
+            location: '',
+            status: '',
+            employeeCount: 0,
+            establishedYear: new Date().getFullYear(),
+            verified: false
+        };
+    }
+
     ngOnInit() {
         this.locations = this.factoryService.getRegions().map(r => ({ label: r.name, value: r.name }));
+    }
+
+    ngOnChanges(changes: SimpleChanges) {
+        if (changes['visible']?.currentValue) {
+            this.resetForm();
+        }
+    }
+
+    private resetForm() {
+        this.factory = this.createEmptyFactory();
+        Promise.resolve().then(() => {
+            if (this.addForm) {
+                this.addForm.reset();
+            }
+        });
     }
 
     close() {

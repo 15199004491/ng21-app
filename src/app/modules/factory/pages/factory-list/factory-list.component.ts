@@ -10,8 +10,8 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { MessageService } from 'primeng/api';
-import { FactoryService } from './factory.service';
-import { Factory } from './factory.model';
+import { FactoryService } from '../../services/factory.service';
+import { Factory } from '../../models/factory.model';
 import { FactoryAddDialogComponent } from './factory-add-dialog.component';
 
 @Component({
