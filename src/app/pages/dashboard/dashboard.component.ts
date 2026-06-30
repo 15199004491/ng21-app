@@ -1,7 +1,7 @@
 // src/app/pages/dashboard/dashboard.component.ts
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DashboardService, StatCard, Order } from '../../services/dashboard.service';
+import { DashboardService, StatCard, Order } from '@/app/services/dashboard.service';
 
 @Component({
   selector: 'app-dashboard',

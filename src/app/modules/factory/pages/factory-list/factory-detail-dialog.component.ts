@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
-import { Factory } from '../../models/factory.model';
+import { Factory } from '@/app/modules/factory/models/factory.model';
 
 @Component({
     selector: 'factory-detail-dialog',

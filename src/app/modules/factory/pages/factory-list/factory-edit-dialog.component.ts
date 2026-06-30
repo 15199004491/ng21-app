@@ -6,8 +6,8 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { InputNumberModule } from 'primeng/inputnumber';
-import { Factory } from '../../models/factory.model';
-import { regionMockData, factoryStatuses } from '../../mock/factory.mock';
+import { Factory } from '@/app/modules/factory/models/factory.model';
+import { regionMockData, factoryStatuses } from '@/app/modules/factory/mock/factory.mock';
 
 @Component({
     selector: 'factory-edit-dialog',

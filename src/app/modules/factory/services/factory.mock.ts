@@ -1,5 +1,5 @@
-import { Factory } from '../models/factory.model';
-import { factoryMockData } from '../mock/factory.mock';
+import { Factory } from '@/app/modules/factory/models/factory.model';
+import { factoryMockData } from '@/app/modules/factory/mock/factory.mock';
 
 export const factoryMock = {
     getFactories: (params?: { name?: string; location?: string; status?: string }): Promise<Factory[]> => {

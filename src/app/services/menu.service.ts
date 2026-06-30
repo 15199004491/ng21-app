@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FlatItem } from '../utils/tree-utils';
+import { FlatItem } from '@/app/utils/tree-utils';
 
 @Injectable({
   providedIn: 'root'

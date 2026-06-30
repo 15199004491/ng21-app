@@ -10,11 +10,11 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { MessageService } from 'primeng/api';
-import { Factory } from '../../models/factory.model';
+import { Factory } from '@/app/modules/factory/models/factory.model';
 import { FactoryAddDialogComponent } from './factory-add-dialog.component';
 import { FactoryEditDialogComponent } from './factory-edit-dialog.component';
 import { FactoryDetailDialogComponent } from './factory-detail-dialog.component';
-import { factoryMock } from '../../services/factory.mock';
+import { factoryMock } from '@/app/modules/factory/services/factory.mock';
 
 @Component({
     template: `

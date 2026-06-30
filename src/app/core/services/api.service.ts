@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError, timeout } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { AppConfigService } from '../config/app.config';
+import { AppConfigService } from '@/app/core/config/app.config';
 
 export interface ApiResponse<T> {
   success: boolean;
@@ -205,3 +205,12 @@ export class ApiService {
     }
   }
 }
+
+import { inject } from '@angular/core';
+
+const apiService = inject(ApiService);
+
+export const http = {
+    request: <T>(method: 'GET' | 'POST' | 'PUT' | 'DELETE', url: string, data?: any, params?: Record<string, any>) => 
+        apiService.request<T>(method, url, data, params),
+};

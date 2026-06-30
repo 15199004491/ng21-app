@@ -1,4 +1,4 @@
-import { Factory, Region } from '../models/factory.model';
+import { Factory, Region } from '@/app/modules/factory/models/factory.model';
 
 export const factoryMockData: Factory[] = [
     { id: 1, name: 'Beijing No.1 Factory', location: 'Beijing', status: 'active', employeeCount: 500, establishedYear: 2000, verified: true },

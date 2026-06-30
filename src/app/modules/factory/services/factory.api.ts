@@ -1,5 +1,5 @@
-import { http } from '../../../core/services/http';
-import { Factory } from '../models/factory.model';
+import { http } from '@/app/core/services/api.service';
+import { Factory } from '@/app/modules/factory/models/factory.model';
 
 export default {
     getFactories: (params?: { name?: string; location?: string; status?: string }) => http.request<Factory[]>('GET', 'factories', undefined, params),//获取工厂列表

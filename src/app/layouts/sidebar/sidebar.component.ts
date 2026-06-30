@@ -2,8 +2,8 @@
 import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, NavigationEnd, RouterModule } from '@angular/router';
-import { MenuService } from '../../services/menu.service';
-import { convertFlatToTree, TreeItem } from '../../utils/tree-utils';
+import { MenuService } from '@/app/services/menu.service';
+import { convertFlatToTree, TreeItem } from '@/app/utils/tree-utils';
 import { Subscription } from 'rxjs';
 
 @Component({
